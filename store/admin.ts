@@ -19,7 +19,7 @@ export const useAdminStore = defineStore("adminStore", {
           body: JSON.stringify(data),
         });
         // return _rawValue;
-console.log('login:', _rawValue);
+        console.log("login:", _rawValue);
       } catch (error) {
         console.error(error);
       }

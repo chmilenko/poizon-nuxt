@@ -1,6 +1,6 @@
 <template>
   <div class="adminLogin">
-    <v-form @submit.prevent="loginAdmin">
+    <v-form @submit.prevent="auth">
       <v-text-field
         label="Логин"
         variant="outlined"
@@ -23,7 +23,7 @@ const password = ref(null);
 
 const active = computed(() => login.value && password.value);
 
-async function loginAdmin() {
+async function auth() {
   const body = {
     login: login.value,
     password: password.value,

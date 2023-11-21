@@ -1,5 +1,7 @@
 <template>
-  <TableSneakers />
+  <NuxtLayout>
+    <TableSneakers />
+  </NuxtLayout>
 </template>
 <script setup>
 import TableSneakers from "~/components/PageAdmin/Table/TableSneakers.vue";

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { opFetch } from "~/composables/opFetch";
+import { authFetch } from "~/composables/opFetch";
 
 export const useAdminStore = defineStore("adminStore", {
   state: () => ({
@@ -14,24 +14,35 @@ export const useAdminStore = defineStore("adminStore", {
       try {
         const {
           data: { _rawValue },
-        } = opFetch("/api/authenication", {
+        } = await authFetch("/api/authenication", {
           method: "POST",
           body: JSON.stringify(data),
+          
         });
-        // return _rawValue;
+        if(_rawValue.id === 1) {
+          await this.verification()
+            await navigateTo('/admin/table')
+          
+        }
         console.log("login:", _rawValue);
       } catch (error) {
         console.error(error);
       }
     },
     async verification() {
-      const {
-        data: { _rawValue },
-      } = await opFetch("/api/verification", { method: "GET" });
-      this.admin = _rawValue;
+      try {
+        const {
+          data: { _rawValue },
+        }= await authFetch("/api/verification", { method: "GET" });
+        console.log(_rawValue);
+        this.admin = _rawValue;
+      }catch (error) {
+        console.error(error)
+      }
+
     },
     async logout() {
-      await opFetch("/api/logout", {
+      await authFetch("/api/logout", {
         method: "POST",
       });
     },

@@ -32,11 +32,9 @@ const props = defineProps({
   photo: {
     type: Array,
     required: true,
-    default: () => []
+    default: () => [],
   },
 });
 const config = useRuntimeConfig();
-// console.log("props:", `${config.public.apiBase}${photos.six}`);
-console.log("blyat:", config);
 </script>
 <style scoped></style>

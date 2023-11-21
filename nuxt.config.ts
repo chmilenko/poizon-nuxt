@@ -23,6 +23,7 @@ export default defineNuxtConfig({
       });
     },
     "@pinia/nuxt",
+    "nuxt-lodash",
     // "nuxt-swiper",
   ],
   vite: {

@@ -18,11 +18,11 @@
   </div>
 </template>
 <script setup>
-import { useAdminStore } from "~/store/admin";
-const adminStore = useAdminStore();
+// import { useAdminStore } from "~/store/admin";
+// const adminStore = useAdminStore();
 
-await adminStore.verification();
-const admin = computed(() => adminStore.admin);
+// await adminStore.verification();
+// const admin = computed(() => adminStore.admin);
 </script>
 <style lang="css">
 .logo {

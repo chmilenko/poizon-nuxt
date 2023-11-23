@@ -1,7 +1,7 @@
 <template>
   <div class="tableAdmin">
     <div class="btnAdmin">
-      <add-sneaker-modal />
+      <Modal :title="'Добавить '" :b="false" />
       <v-btn @click="clickShowFilters">Фильтры</v-btn>
     </div>
     <div class="filters-block" v-if="showFilters">
@@ -100,6 +100,9 @@
               <td class="count">{{ size.count }}</td>
             </div>
             <td>{{ sneaker.price }}</td>
+            <td>
+              <Modal :id="sneaker.id" :title="'Изменить'" :b="true" />
+            </td>
           </tr>
         </tbody>
       </v-table>
@@ -108,8 +111,8 @@
 </template>
 <script setup>
 import { useSneakersStore } from "~/store/sneakers";
+import Modal from "./Modal.vue";
 import _ from "lodash";
-import AddSneakerModal from "./AddSneakerModal.vue";
 const sneakerStore = useSneakersStore();
 await sneakerStore.getSneakers();
 
@@ -161,7 +164,10 @@ const filteredSneakers = computed(() => {
           : -Infinity;
       const priceTo =
         priceToFilter.value !== "" ? Number(priceToFilter.value) : Infinity;
-      const model = modelFilter.value !== "" ? modelFilter.value : null;
+      const model =
+        modelFilter.value !== ""
+          ? modelFilter.value.toLowerCase().trim()
+          : null;
       const size =
         filterSize.value !== undefined && filterSize.value.length > 0
           ? filterSize.value
@@ -170,7 +176,7 @@ const filteredSneakers = computed(() => {
       return (
         (priceFrom ? sneaker.price >= priceFrom : true) &&
         (priceTo ? sneaker.price <= priceTo : true) &&
-        (model ? sneaker.name.includes(model) : true) &&
+        (model ? sneaker.name.toLowerCase().trim().includes(model) : true) &&
         (size ? sneaker.Sizes.some((e) => size.includes(e.id)) : true)
       );
     });

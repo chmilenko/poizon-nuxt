@@ -16,10 +16,11 @@ export const useAdminStore = defineStore("adminStore", {
           data: { _rawValue },
         } = await authFetch("/api/authenication", {
           method: "POST",
-          body: JSON.stringify(data),
+          body: data,
           
         });
-        if(_rawValue.id === 1) {
+        console.log(_rawValue);
+        if(_rawValue) {
           await this.verification()
             await navigateTo('/admin/table')
           

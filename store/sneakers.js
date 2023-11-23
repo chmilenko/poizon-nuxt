@@ -4,6 +4,7 @@ import { opFetch } from "~/composables/opFetch";
 export const useSneakersStore = defineStore("sneakersStore", {
   state: () => ({
     sneakers: [],
+    oneSneaker: {},
     models: [],
     marks: [],
     newSneaker: [],
@@ -21,7 +22,18 @@ export const useSneakersStore = defineStore("sneakersStore", {
           data: { _rawValue },
         } = await opFetch("/api/sneakers", { method: "get" });
         this.sneakers = _rawValue;
-        // console.log("store:", _rawValue);
+      } catch (error) {
+        console.error(error);
+      }
+      this.setLoading(false);
+    },
+    async getOneSneaker(id) {
+      this.setLoading(true);
+      try {
+        const {
+          data: { _rawValue },
+        } = await opFetch(`/api/sneakers/${id}`, { method: "get" });
+        this.oneSneaker = _rawValue;
       } catch (error) {
         console.error(error);
       }
@@ -57,10 +69,9 @@ export const useSneakersStore = defineStore("sneakersStore", {
           data: { _rawValue },
         } = await opFetch("/api/sneakers", {
           method: "POST",
-          body: JSON.stringify(data),
+          body: data,
         });
         this.modelId = _rawValue.id;
-        console.log("AAIIIIDII:", this.modelId);
       } catch (error) {
         console.error(error);
       }
@@ -72,9 +83,7 @@ export const useSneakersStore = defineStore("sneakersStore", {
         } = await opFetch(`/api/sneakers/photos/${this.modelId}`, {
           method: "POST",
           body: data,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+
         });
         this.newSneaker = _rawValue;
       } catch (error) {

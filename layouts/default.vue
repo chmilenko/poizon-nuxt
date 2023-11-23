@@ -20,8 +20,15 @@
 </template>
 <script setup>
 import { useAdminStore } from "~/store/admin";
+import { useSneakersStore } from "~/store/sneakers";
 const adminStore = useAdminStore();
+const sneakerStore = useSneakersStore();
 
+await sneakerStore.getMarks();
+
+const allMarks = computed(() => {
+  sneakerStore.marks;
+});
 // await adminStore.verification();
 // const admin = computed(() => adminStore.admin);
 // console.log(admin.value);

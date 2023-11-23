@@ -23,6 +23,23 @@
         <div сlass="formAddSneakers">
           <v-form @submit.prevent="addSneaker">
             <v-row class="mt-4">
+              <v-text-field
+                variant="outlined"
+                label="Цена"
+                class="mr-3"
+                v-model="sneaker.price"
+              ></v-text-field>
+              <v-combobox
+                variant="outlined"
+                label="Модель"
+                no-data-text="Добавится новая модель"
+                item-title="name"
+                item-value="id"
+                :items="allModels"
+                v-model="sneaker.model"
+                class="mr-3"
+                >Модель</v-combobox
+              >
               <v-combobox
                 variant="outlined"
                 label="Брэнд"
@@ -36,22 +53,6 @@
               >
                 Брэнд
               </v-combobox>
-              <v-combobox
-                variant="outlined"
-                label="Модель"
-                no-data-text="Добавится новая модель"
-                item-title="name"
-                item-value="id"
-                :items="allModels"
-                v-model="sneaker.model"
-                >Модель</v-combobox
-              >
-              <v-text-field
-                variant="outlined"
-                label="Цена"
-                class="mr-3"
-                v-model="sneaker.price"
-              ></v-text-field>
             </v-row>
 
             <v-row v-for="(item, index) in sneaker.sizeCounts" :key="index">
@@ -67,12 +68,13 @@
                 v-model="item.count"
                 class="mr-3"
               ></v-text-field>
-              <v-btn @click="removeSizeCount(index)">Удалить</v-btn>
+              <v-btn @click="removeSizeCount(index)" size="x-large"
+                >Удалить</v-btn
+              >
             </v-row>
             <v-row class="mb-4">
               <v-btn @click="addSizeCount()">Добавить размер/количество</v-btn>
             </v-row>
-
             <v-row>
               <v-file-input
                 label="Главное фото"
@@ -135,8 +137,14 @@ const sneakerStore = useSneakersStore();
 await sneakerStore.getModels();
 await sneakerStore.getMarks();
 
-const allMarks = computed(() => sneakerStore.marks);
-const allModels = computed(() => sneakerStore.models);
+const allMarks = computed(() => {
+  if (sneakerStore.marks.length === 0 && sneakerStore.loading) return [];
+  else return sneakerStore.marks;
+});
+const allModels = computed(() => {
+  if (sneakerStore.models.length === 0 && sneakerStore.loading) return [];
+  else return sneakerStore.models;
+});
 function addSizeCount() {
   sneaker.sizeCounts.push({ size: null, count: null });
 }
@@ -154,7 +162,24 @@ const six = ref(null);
 
 async function addSneaker() {
   await sneakerStore.addNewSneaker(sneaker);
-  dialog.value = false;
+  console.log("Main photo:");
+  console.log(mainPhoto.value?.[0]);
+  console.log(two.value?.[0]);
+  console.log(four.value?.[0]);
+  console.log(five.value?.[0]);
+  console.log(six.value?.[0]);
+
+  const formData = new FormData();
+  formData.append("mainPhoto", mainPhoto.value[0]);
+  formData.append("two", two.value[0]);
+  formData.append("three", three.value[0]);
+  formData.append("four", four.value[0]);
+  formData.append("five", five.value[0]);
+  formData.append("six", six.value[0]);
+  console.log(formData);
+  await sneakerStore.addPhotosSneaker(formData);
+
+  // dialog.value = false;
   //   await clearData();
 }
 async function clearData() {
@@ -166,8 +191,6 @@ async function clearData() {
     count: null,
   };
 }
-
-console.log("blya:", allMarks);
 </script>
 
 <style scoped>

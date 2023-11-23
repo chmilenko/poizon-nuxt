@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sneakers-block">
     <div v-for="sneaker in allSneakers" :key="sneaker.id">
       <SneakerCard :sneaker="sneaker" />
     </div>
@@ -19,4 +19,11 @@ const allSneakers = computed(() => sneakerStore.sneakers);
 console.log("SDADADA:", allSneakers.value);
 </script>
 
-<style scoped></style>
+<style scoped>
+.sneakers-block {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 10vh;
+}
+</style>

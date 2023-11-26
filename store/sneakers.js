@@ -10,7 +10,7 @@ export const useSneakersStore = defineStore("sneakersStore", {
     newSneaker: null,
     loading: false,
     modelId: null,
-    getIdSneaker: null
+    putSneaker: null,
   }),
   actions: {
     setLoading(option) {
@@ -85,9 +85,22 @@ export const useSneakersStore = defineStore("sneakersStore", {
         } = await opFetch(`/api/sneakers/photos/${this.modelId}`, {
           method: "POST",
           body: data,
-
         });
         this.newSneaker = _rawValue;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async putSneakers(data) {
+      try {
+        console.log(data);
+        const {
+          data: { _rawValue },
+        } = await opFetch(`/api/sneakers/${this.oneSneaker.id}`, {
+          method: "PUT",
+          body: JSON.stringify(data),
+        });
+        this.putSneaker = _rawValue;
       } catch (error) {
         console.error(error);
       }

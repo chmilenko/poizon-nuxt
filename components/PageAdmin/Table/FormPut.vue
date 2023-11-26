@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form @submit.prevent="clickPutSneaker">
     <v-row class="mt-4">
       <v-text-field
         variant="outlined"
@@ -83,7 +83,7 @@
         v-model="six"
       ></v-file-input>
     </v-row>
-    <v-btn type="submit">Добавить педали</v-btn>
+    <v-btn type="submit">Изменить педали</v-btn>
   </v-form>
 </template>
 <script setup>
@@ -162,6 +162,10 @@ const six = ref(
   (oneSneaker.value.Photos && oneSneaker.value.Photos.map((el) => el.six)) ||
     null
 );
+
+async function clickPutSneaker() {
+  await sneakerStore.putSneakers(sneaker);
+}
 </script>
 <style scoped>
 :deep(.v-file-input) {

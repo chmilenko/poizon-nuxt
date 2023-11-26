@@ -1,5 +1,5 @@
 <template>
-  <v-form @submit.prevent="addSneaker">
+  <v-form>
     <v-row class="mt-4">
       <v-text-field
         variant="outlined"
@@ -32,6 +32,7 @@
         Брэнд
       </v-combobox>
     </v-row>
+
     <v-row v-for="(item, index) in sneaker.sizeCounts" :key="index">
       <v-text-field
         variant="outlined"
@@ -82,28 +83,33 @@
         v-model="six"
       ></v-file-input>
     </v-row>
-    <v-btn type="submit">{{ modalProps.title }} педали</v-btn>
+    <v-btn type="submit">Добавить педали</v-btn>
   </v-form>
 </template>
 <script setup>
-import { useSneakersStore } from "~/store/sneakers";
-
-const modalProps = defineProps({
-  oneSneaker: {
-    type: Object,
-    required: false,
-  },
-  title: {
-    type: String,
+const props = defineProps({
+  id: {
+    type: Number,
     required: true,
   },
 });
-// console.log("SSSSSSSS:", modalProps.oneSneaker);
+
+import { useSneakersStore } from "~/store/sneakers";
+
+const sneakerStore = useSneakersStore();
+
+await sneakerStore.getOneSneaker(props.id);
+await sneakerStore.getModels();
+await sneakerStore.getMarks();
+
+const oneSneaker = computed(() => sneakerStore.oneSneaker);
+console.log("sss:", oneSneaker.value);
+
 const sneaker = reactive({
-  mark: (modalProps.oneSneaker && modalProps.oneSneaker.Mark.name) || null,
-  model: (modalProps.oneSneaker && modalProps.oneSneaker.name) || null,
-  sizeCounts: (modalProps.oneSneaker &&
-    modalProps.oneSneaker.Sizes.map((item) => ({
+  mark: (oneSneaker.value && oneSneaker.value.Mark.name) || null,
+  model: (oneSneaker.value && oneSneaker.value.name) || null,
+  sizeCounts: (oneSneaker.value &&
+    oneSneaker.value.Sizes.map((item) => ({
       size: item.size,
       count: item.count,
     }))) || [
@@ -112,11 +118,8 @@ const sneaker = reactive({
       count: null,
     },
   ],
-  price: modalProps.oneSneaker ? modalProps.oneSneaker.price : null,
+  price: oneSneaker.value ? oneSneaker.value.price : null,
 });
-const sneakerStore = useSneakersStore();
-await sneakerStore.getModels();
-await sneakerStore.getMarks();
 
 const allMarks = computed(() => {
   if (sneakerStore.marks.length === 0 && sneakerStore.loading) return [];
@@ -135,67 +138,30 @@ function removeSizeCount(index) {
 }
 
 const mainPhoto = ref(
-  (modalProps.oneSneaker.Photos &&
-    modalProps.oneSneaker.Photos.map((el) => el.mainPhoto)) ||
+  (oneSneaker.value.Photos &&
+    oneSneaker.value.Photos.map((el) => el.mainPhoto)) ||
     null
 );
 const two = ref(
-  (modalProps.oneSneaker.Photos &&
-    modalProps.oneSneaker.Photos.map((el) => el.two)) ||
+  (oneSneaker.value.Photos && oneSneaker.value.Photos.map((el) => el.two)) ||
     null
 );
 const three = ref(
-  (modalProps.oneSneaker.Photos &&
-    modalProps.oneSneaker.Photos.map((el) => el.three)) ||
+  (oneSneaker.value.Photos && oneSneaker.value.Photos.map((el) => el.three)) ||
     null
 );
 const four = ref(
-  (modalProps.oneSneaker.Photos &&
-    modalProps.oneSneaker.Photos.map((el) => el.four)) ||
+  (oneSneaker.value.Photos && oneSneaker.value.Photos.map((el) => el.four)) ||
     null
 );
 const five = ref(
-  (modalProps.oneSneaker.Photos &&
-    modalProps.oneSneaker.Photos.map((el) => el.five)) ||
+  (oneSneaker.value.Photos && oneSneaker.value.Photos.map((el) => el.five)) ||
     null
 );
 const six = ref(
-  (modalProps.oneSneaker.Photos &&
-    modalProps.oneSneaker.Photos.map((el) => el.six)) ||
+  (oneSneaker.value.Photos && oneSneaker.value.Photos.map((el) => el.six)) ||
     null
 );
-console.log(
-  "photo",
-  modalProps.oneSneaker.Photos.map((el) => el.mainPhoto)
-);
-async function addSneaker() {
-  await sneakerStore.addNewSneaker(sneaker);
-  console.log("Main photo:");
-  console.log(mainPhoto.value?.[0]);
-  console.log(two.value?.[0]);
-  console.log(four.value?.[0]);
-  console.log(five.value?.[0]);
-  console.log(six.value?.[0]);
-
-  const formData = new FormData();
-  formData.append("mainPhoto", mainPhoto.value[0]);
-  formData.append("two", two.value[0]);
-  formData.append("three", three.value[0]);
-  formData.append("four", four.value[0]);
-  formData.append("five", five.value[0]);
-  formData.append("six", six.value[0]);
-  console.log(formData);
-  await sneakerStore.addPhotosSneaker(formData);
-}
-// async function clearData() {
-//   sneaker.mark = null;
-//   sneaker.model = null;
-//   sneaker.price = null;
-//   sneaker.sizeCounts = {
-//     size: null,
-//     count: null,
-//   };
-// }
 </script>
 <style scoped>
 :deep(.v-file-input) {

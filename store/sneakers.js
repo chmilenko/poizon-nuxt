@@ -3,13 +3,14 @@ import { opFetch } from "~/composables/opFetch";
 
 export const useSneakersStore = defineStore("sneakersStore", {
   state: () => ({
-    sneakers: [],
-    oneSneaker: {},
-    models: [],
-    marks: [],
-    newSneaker: [],
+    sneakers: null,
+    oneSneaker: null,
+    models: null,
+    marks: null,
+    newSneaker: null,
     loading: false,
     modelId: null,
+    getIdSneaker: null
   }),
   actions: {
     setLoading(option) {
@@ -34,6 +35,7 @@ export const useSneakersStore = defineStore("sneakersStore", {
           data: { _rawValue },
         } = await opFetch(`/api/sneakers/${id}`, { method: "get" });
         this.oneSneaker = _rawValue;
+        console.log(this.oneSneaker);
       } catch (error) {
         console.error(error);
       }

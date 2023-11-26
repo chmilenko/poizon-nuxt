@@ -1,7 +1,7 @@
 <template>
   <div class="tableAdmin">
     <div class="btnAdmin">
-      <Modal :title="'Добавить '" :b="false" />
+      <add-sneaker-modal />
       <v-btn @click="clickShowFilters">Фильтры</v-btn>
     </div>
     <div class="filters-block" v-if="showFilters">
@@ -101,7 +101,7 @@
             </div>
             <td>{{ sneaker.price }}</td>
             <td>
-              <Modal :id="sneaker.id" :title="'Изменить'" :b="true" />
+              <put-sneaker-modal :id="sneaker.id"  />
             </td>
           </tr>
         </tbody>
@@ -111,10 +111,13 @@
 </template>
 <script setup>
 import { useSneakersStore } from "~/store/sneakers";
-import Modal from "./Modal.vue";
+import PutSneakerModal from "./PutSneakerModal";
+import AddSneakerModal from "./AddSneakerModal.vue";
 import _ from "lodash";
 const sneakerStore = useSneakersStore();
 await sneakerStore.getSneakers();
+
+
 
 const sortField = ref("id");
 const sortOrder = ref(1);
@@ -149,6 +152,8 @@ const sortSneakers = (field) => {
     sortOrder.value = 1;
   }
 };
+
+
 
 const priceFromFilter = ref("");
 const priceToFilter = ref("");

@@ -7,9 +7,7 @@
       transition="dialog-bottom-transition"
     >
       <template v-slot:activator="{ props }">
-        <v-btn dark v-bind="props" @click="getSneaker(propsId.id)"
-          >Изменить</v-btn
-        >
+        <v-btn dark v-bind="props">Изменить</v-btn>
       </template>
       <v-card>
         <v-toolbar style="background-color: #56f1fd">
@@ -22,7 +20,8 @@
             <v-btn variant="text" @click="dialog = false">Сохранить</v-btn>
           </v-toolbar-items>
         </v-toolbar>
-        <SneakerCard :sneaker="oneSneaker" />
+        <div сlass="formAddSneakers"></div>
+        <FormAddPut :id="getProp" />
       </v-card>
     </v-dialog>
   </v-row>
@@ -30,26 +29,23 @@
 
 <script setup>
 import { useSneakersStore } from "~/store/sneakers";
-import SneakerCard from "~/components/Sneakers/SneakerCard.vue";
+import FormAddPut from "./FormPut.vue";
+
 const dialog = ref(false);
 const notifications = ref(false);
 const sound = ref(false);
 const widgets = ref(false);
 
 const sneakerStore = useSneakersStore();
-const propsId = defineProps({
+const modalProps = defineProps({
   id: {
     type: Number,
     required: true,
+    default: null,
   },
 });
-const getSneaker = async (id) => {
-  await sneakerStore.getOneSneaker(id);
-};
-const oneSneaker = computed(() => {
-  return sneakerStore.oneSneaker;
-});
-console.log("ssss:", oneSneaker.value);
+
+const getProp = modalProps.id;
 </script>
 
 <style scoped>

@@ -11,6 +11,7 @@ export const useSneakersStore = defineStore("sneakersStore", {
     loading: false,
     modelId: null,
     putSneaker: null,
+    file: null
   }),
   actions: {
     setLoading(option) {
@@ -35,7 +36,6 @@ export const useSneakersStore = defineStore("sneakersStore", {
           data: { _rawValue },
         } = await opFetch(`/api/sneakers/${id}`, { method: "get" });
         this.oneSneaker = _rawValue;
-        console.log(this.oneSneaker);
       } catch (error) {
         console.error(error);
       }
@@ -105,5 +105,25 @@ export const useSneakersStore = defineStore("sneakersStore", {
         console.error(error);
       }
     },
+        async putSneakersPhotos(data) {
+      try {
+        const {
+          data: { _rawValue },
+        } = await opFetch(`/api/sneakers/photos/${this.oneSneaker.id}`, {
+          method: "PUT",
+          body: JSON.stringify(data),
+        });
+        this.putSneaker = _rawValue;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getImageFile (url) {
+      const response = await opFetch(url, {method: 'GET'})
+      console.log(response);
+    //   const blob = await response.blob();
+    //   const filename = url.substring(url.lastIndexOf('/') + 1);
+    // this.file = File([blob], filename);
+    }
   },
 });

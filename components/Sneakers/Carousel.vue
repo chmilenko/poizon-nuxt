@@ -48,6 +48,7 @@ const props = defineProps({
   },
 });
 const config = useRuntimeConfig();
+console.log(`${config.public.apiBase}${props.photo.three}`);
 </script>
 <style scoped>
 img {

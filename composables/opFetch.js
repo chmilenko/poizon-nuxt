@@ -9,7 +9,6 @@
       baseURL: config.public.apiBase,
       headers,
       ...options,
-
     });
   };
   export const authFetch = (request, options) => {
@@ -23,7 +22,7 @@
       baseURL: config.public.apiBase,
       headers,
       ...options,
-      credentials: 'include',
+      // credentials: 'include',`
     });
   };
   

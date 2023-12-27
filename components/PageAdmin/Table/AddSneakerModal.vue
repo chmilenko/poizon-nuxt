@@ -159,10 +159,14 @@ const three = ref(null);
 const four = ref(null);
 const five = ref(null);
 const six = ref(null);
-
+watch(() => mainPhoto.value);
+watch(mainPhoto, (newFrom) => {
+  if (newFrom) {
+    console.log(newFrom);
+  }
+});
 async function addSneaker() {
   await sneakerStore.addNewSneaker(sneaker);
-  console.log("Main photo:");
   console.log(mainPhoto.value?.[0]);
   console.log(two.value?.[0]);
   console.log(four.value?.[0]);

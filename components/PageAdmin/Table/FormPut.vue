@@ -103,7 +103,6 @@ await sneakerStore.getModels();
 await sneakerStore.getMarks();
 
 const oneSneaker = computed(() => sneakerStore.oneSneaker);
-console.log("sss:", oneSneaker.value);
 
 const sneaker = reactive({
   mark: (oneSneaker.value && oneSneaker.value.Mark.name) || null,
@@ -136,30 +135,47 @@ function addSizeCount() {
 function removeSizeCount(index) {
   sneaker.sizeCounts.splice(index, 1);
 }
+const config = useRuntimeConfig();
+async function getPhoto(photo) {
+  await sneakerStore.getImageFile(`${config.public.apiBase}${photo}`);
+}
+const fileImage = computed(() => sneakerStore.file);
 
 const mainPhoto = ref(
-  (oneSneaker.value.Photos &&
-    oneSneaker.value.Photos.map((el) => el.mainPhoto)) ||
+  (oneSneaker.value &&
+    getPhoto(oneSneaker.value.Photos.map((el) => getPhoto(el.mainPhoto))) &&
+    fileImage.value) ||
     null
 );
+
 const two = ref(
-  (oneSneaker.value.Photos && oneSneaker.value.Photos.map((el) => el.two)) ||
+  (oneSneaker.value &&
+    getPhoto(oneSneaker.value.Photos.map((el) => getPhoto(el.two))) &&
+    fileImage.value) ||
     null
 );
 const three = ref(
-  (oneSneaker.value.Photos && oneSneaker.value.Photos.map((el) => el.three)) ||
+  (oneSneaker.value &&
+    getPhoto(oneSneaker.value.Photos.map((el) => getPhoto(el.three))) &&
+    fileImage.value) ||
     null
 );
 const four = ref(
-  (oneSneaker.value.Photos && oneSneaker.value.Photos.map((el) => el.four)) ||
+  (oneSneaker.value &&
+    getPhoto(oneSneaker.value.Photos.map((el) => getPhoto(el.four))) &&
+    fileImage.value) ||
     null
 );
 const five = ref(
-  (oneSneaker.value.Photos && oneSneaker.value.Photos.map((el) => el.five)) ||
+  (oneSneaker.value &&
+    getPhoto(oneSneaker.value.Photos.map((el) => getPhoto(el.five))) &&
+    fileImage.value) ||
     null
 );
 const six = ref(
-  (oneSneaker.value.Photos && oneSneaker.value.Photos.map((el) => el.six)) ||
+  (oneSneaker.value &&
+    getPhoto(oneSneaker.value.Photos.map((el) => getPhoto(el.six))) &&
+    fileImage.value) ||
     null
 );
 

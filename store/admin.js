@@ -21,8 +21,8 @@ export const useAdminStore = defineStore("adminStore", {
         });
         console.log(_rawValue);
         if(_rawValue) {
-          await this.verification()
-            await navigateTo('/admin/table')
+          // await this.verification()
+            await navigateTo('/')
           
         }
         console.log("login:", _rawValue);

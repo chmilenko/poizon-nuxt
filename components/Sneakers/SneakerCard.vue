@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="sneaker-card">
     <div v-for="photo in sneaker.Photos" :key="photo.id">
       <Carousel :photo="photo" />
     </div>
-    <div>{{ sneaker.Mark.name }}</div>
-    <p>{{ sneaker.name }}</p>
-    <p>{{ sneaker.price }}</p>
+    <div>Брэнд: {{ sneaker?.Mark?.name }}</div>
+    <p>Модель: {{ sneaker?.name }}</p>
+    <p>Цена: {{ sneaker?.price }}</p>
   </div>
 </template>
 
@@ -19,4 +19,8 @@ const props = defineProps({
   },
 });
 </script>
-<style scoped></style>
+<style scoped>
+.sneaker-card {
+  width: 53vh;
+}
+</style>

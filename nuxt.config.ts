@@ -23,8 +23,10 @@ export default defineNuxtConfig({
       });
     },
     "@pinia/nuxt",
-    // "nuxt-swiper",
+    "nuxt-lodash",
+    "nuxt-swiper",
   ],
+
   vite: {
     vue: {
       template: {
